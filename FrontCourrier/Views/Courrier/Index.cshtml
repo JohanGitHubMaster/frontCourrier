@@ -1,0 +1,70 @@
+﻿@model IEnumerable<FrontCourrier.Models.Courriers>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Réferences)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Expediteur)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Objet)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Commentaire)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CoursierId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReceptionisteId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FlagId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Réferences)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Expediteur)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Objet)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Commentaire)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CoursierId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReceptionisteId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FlagId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatusId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+            @Html.ActionLink("IndexCoursier", "IndexCoursier") |
+        </td>
+    </tr>
+}
+
+</table>
