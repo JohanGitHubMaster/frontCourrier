@@ -19,9 +19,11 @@
                 </button>
                 @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar">
                 <ul class="nav navbar-nav">
-                    @Html.ActionLink("Mouvement Courrier", "IndexMouvementCourrier", "Courrier", new { area = "" }, new { @class = "navbar-brand" })
+                    <li>
+                        @Html.ActionLink("Mouvement Courrier", "IndexMouvementCourrier", "Courrier", new { area = "" }, new { @class = "navbar-brand" })
+                    </li>
                 </ul>
             </div>
         </div>

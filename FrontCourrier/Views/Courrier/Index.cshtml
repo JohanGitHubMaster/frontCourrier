@@ -1,70 +1,122 @@
 ﻿@model IEnumerable<FrontCourrier.Models.Courriers>
-
+@{
+  int count = 0;
+  int co = 0;
+}
 <p>
-    @Html.ActionLink("Create New", "Create")
+  @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Réferences)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Expediteur)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Objet)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Commentaire)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CoursierId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReceptionisteId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FlagId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StatusId)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
+
+<form asp-controller="Courrier" asp-action="Index" method="get">
+  <p>
+    @Html.DropDownList("statusid", (SelectList)ViewBag.Status)
+    Search: <input type="text" name="searchstring" value="@ViewBag.searchstring" />
+    <input type="submit" value="Filter" />
+  </p>
+</form>
+
+<table class="table">
+  <tr>
+    <th>
+      @Html.DisplayNameFor(model => model.Réferences)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.Expediteur)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.Objet)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.Commentaire)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.CoursierId)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.ReceptionisteId)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.FlagId)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.StatusId)
+    </th>
+    <th></th>
+  </tr>
+
+  @foreach (var item in Model)
+  {
+
+
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Réferences)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Expediteur)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Objet)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Commentaire)
-        </td>
-        <td>
+      <td>
+        @(((List<String>)ViewBag.ListCoursier).ElementAt(count))
+      </td>
+      <td>
+        @(((List<String>)ViewBag.ListReceptioniste).ElementAt(count))
+      </td>
+      <td>
+        @(((List<String>)ViewBag.ListFlag).ElementAt(count))
+      </td>
+      <td>
+        @(((List<String>)ViewBag.ListStatus).ElementAt(count++))
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.Réferences)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.Expediteur)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.Objet)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.Commentaire)
+      </td>
+      @*<td>
             @Html.DisplayFor(modelItem => item.CoursierId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ReceptionisteId)
+            @Html.DisplayFor(modelItem => (item.ReceptionisteId))
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.FlagId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.StatusId)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
-            @Html.ActionLink("IndexCoursier", "IndexCoursier") |
-        </td>
+        </td>*@
+      <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+        @Html.ActionLink("IndexCoursier", "IndexCoursier") |
+      </td>
     </tr>
-}
+  }
 
 </table>
+
+<nav aria-label="...">
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    @{
+      for (int i = 1; i <= (int)ViewBag.TotalPage; i++)
+      {
+        <li class="page-item">
+          @Html.ActionLink(i.ToString(), "Index", "Courrier",
+                 new
+                 {
+                   take = 15,
+                   skip = (i * 15) - 15,
+                   searchstring = ViewBag.searchstring,
+                   statusid = ViewBag.statusid
+                 },
+                 new { @class = "page-link" })
+        </li>
+      }
+    }
+  </ul>
+</nav>

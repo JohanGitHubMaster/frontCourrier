@@ -34,7 +34,7 @@ namespace FrontCourrier.Models
             return list;
         }
 
-        public List<Object> FindObject(string Myclass)
+        public List<Object> FindObject(string Myclass,Dictionary<string,string> condition,int? skip,int? take)
         {                                            
             Connexion.connection();
             List<Object> courriers = new List<Object>();
@@ -53,6 +53,27 @@ namespace FrontCourrier.Models
             else
                 queryStringModified += " FROM [CourrierContext].[dbo]." + Myclass;
 
+            if (condition != null)
+            {
+                queryStringModified += " WHERE ";
+                int countcond=0;
+                foreach (var item in condition)
+                {
+                    if (countcond++ > 0 || countcond < condition.Count-1)
+                        queryStringModified += " AND ";
+                    //if(Islike)
+                        queryStringModified += $"([{item.Key}] Like '{item.Value}')";
+                    //else
+                    //    queryStringModified += $"[{ item.Key }] = '{item.Value }'";
+                }
+            }
+
+            if (skip!=null && take!=null)
+            {
+                queryStringModified += " order by [Id] OFFSET "+ skip + " ROWS" +
+                    " FETCH NEXT "+ take + " ROWS ONLY;";
+            }
+
             SqlCommand cmd = new SqlCommand(queryStringModified, Connexion.con);
             Connexion.con.Open();
             SqlDataReader reader = cmd.ExecuteReader();
@@ -67,12 +88,16 @@ namespace FrontCourrier.Models
                     try
                     {
                         readercount = mi;
-                        mi.SetValue(o, reader[count]);
+                        if(reader[count].GetType().FullName.ToLower().Contains("null"))
+                            mi.SetValue(o, null);                      
+                        else 
+                            mi.SetValue(o, reader[count]);
+                        
                         count++;
                     }
                     catch(Exception ex)
                     {
-                        mi.SetValue((DateTime?)o, reader[count]);
+                        //mi.SetValue(o, reader[count]);
                     }
                  
                 }               
@@ -80,6 +105,14 @@ namespace FrontCourrier.Models
             }
             Connexion.con.Close();
             return courriers;
+        }
+
+        public object ElementCourrier(string element,int Id)
+        {
+            Dictionary<string, string> condition = new Dictionary<string, string>();
+            condition.Add("Id", Id.ToString());
+            var result = FindObject(element, condition,null,null).FirstOrDefault();
+            return result;
         }
     }
 }

@@ -10,21 +10,80 @@ namespace FrontCourrier.Controllers
     public class CourrierController : Controller
     {
         // GET: Courrier
-        public ActionResult Index()
+        public ActionResult Index(String statusid,String searchstring,String take="15", String skip="0")
         {
-            CourrierDAO d = new CourrierDAO();
-            var s = d.FindObject("Courriers");
-            List<Courriers> c = new List<Courriers>();
-            foreach(var sq in s)
+         
+        
+            ViewBag.searchstring = searchstring;
+            ViewBag.statusid = statusid;
+           CourrierDAO d = new CourrierDAO();
+            List<Status> stat = new List<Status>();
+
+
+            //var counts = d.FindObject("Courriers", null, Int32.Parse(skip), Int32.Parse(take));
+           
+
+            var statu = d.FindObject("Status", null,null,null);
+            stat.Add(new Status() { Id = 0,Type="Tous" });
+            foreach (var co in statu)
             {
-                c.Add((Courriers)sq);
+                stat.Add((Status)co);
+            }
+            ViewBag.Status = new SelectList(stat, "Id", "Type");
+
+            //var s = d.FindObject("Courriers", condition);
+            Dictionary<string, string> condition = null;
+            if (statusid != null && statusid != "0")
+            {
+                if(condition==null)
+                condition = new Dictionary<string, string>();
+                condition.Add("StatusId", statusid);
+               
+            }
+            if (!String.IsNullOrEmpty(searchstring))
+            {
+                searchstring = searchstring.Replace("'", "''");
+                if (condition == null)
+                    condition = new Dictionary<string, string>();
+                condition.Add("Expediteur","%"+ searchstring + "%' OR [Commentaire] LIKE '%"+ searchstring + "%'  OR [CoursierId] LIKE '%" + searchstring + "%' OR [Réferences] LIKE '%" + searchstring+ "%' OR [Objet] LIKE '%"+ searchstring+"%");
+            }
+            var s = d.FindObject("Courriers", condition, Int32.Parse(skip), Int32.Parse(take));
+            var counts = d.FindObject("Courriers", condition, null, null);
+            double TotalPage = 0;
+            if (take != null)
+                TotalPage = (double)counts.Count / double.Parse(take);
+
+            ViewBag.TotalPage = Math.Ceiling(TotalPage);
+           
+
+            List<Courriers> c = new List<Courriers>();
+            var cours = new List<String>();
+            var recept = new List<String>();
+            var flag = new List<String>();
+            var status = new List<String>();
+            foreach (var sq in s)
+            {
+                Dictionary<string, string> conditioncoursier = new Dictionary<string, string>();
+                Dictionary<string, string> conditionreceptioniste = new Dictionary<string, string>();
+                Courriers scour = (Courriers)sq;
+                c.Add(scour);
+                cours.Add(((Coursier)d.ElementCourrier("Coursier", scour.CoursierId)).Nom);               
+                recept.Add(((Receptioniste)d.ElementCourrier("Receptioniste", scour.ReceptionisteId)).Nom);
+                flag.Add(((Flag)d.ElementCourrier("Flag", scour.FlagId)).Type);                             
+                status.Add(((Status)d.ElementCourrier("Status", scour.StatusId)).Type);
+                          
+                ViewBag.ListCoursier = cours;
+                ViewBag.ListReceptioniste = recept;
+                ViewBag.ListFlag = flag;
+                ViewBag.ListStatus = status;
             }
             return View(c);
         }
+
         public ActionResult IndexCoursier()
         {
             CourrierDAO d = new CourrierDAO();
-            var s = d.FindObject("Coursier");
+            var s = d.FindObject("Coursier",null,null,null);
             List<Coursier> c = new List<Coursier>();
             foreach (var sq in s)
             {
@@ -36,7 +95,7 @@ namespace FrontCourrier.Controllers
         public ActionResult IndexMouvementCourrier()
         {
             CourrierDAO d = new CourrierDAO();
-            var s = d.FindObject("MouvementCourrier");
+            var s = d.FindObject("MouvementCourrier",null,null,null);
             List<MouvementCourrier> c = new List<MouvementCourrier>();
             foreach (var sq in s)
             {

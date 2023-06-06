@@ -6,8 +6,9 @@ namespace FrontCourrier.Models
     {
         public int Id { get; set; }
         public int? CoursierId { get; set; }
-        public int? CourriersId { get; set; }
         public int? StatusId { get; set; }
+        public int? CourriersId { get; set; }
+        
         public int? ReceptionisteId { get; set; }
 
         //public Status Status { get; set; }
