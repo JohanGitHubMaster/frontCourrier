@@ -2,9 +2,10 @@
 @{
   int count = 0;
 }
-<p>
+@*<p>
   @Html.ActionLink("Create New", "Create")
-</p>
+</p>*@
+<h3>Mouvement des Courriers</h3>
 <table class="table">
   <tr>
     <th>
@@ -47,11 +48,11 @@
       <td>
         @Html.DisplayFor(modelItem => item.DatedeMouvement)
       </td>
-      <td>
+      @*<td>
         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
         @Html.ActionLink("Details", "Details", new { id = item.Id }) |
         @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-      </td>
+      </td>*@
     </tr>
   }
 

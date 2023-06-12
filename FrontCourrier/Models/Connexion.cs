@@ -15,7 +15,7 @@ namespace FrontCourrier.Models
 
         public static void connection()
         {
-            string costr = "Server = (localdb)\\MSSQLLocalDB; Database =CourrierContext; Trusted_Connection = true";
+            string costr = "Server = DESKTOP-9TF6LVH; Database =CourrierContext; Trusted_Connection = true";
             con = new SqlConnection(costr);
         }
     }

@@ -2,9 +2,10 @@
 @{
   int count = 0;
 }
-<p>
+@*<p>
   @Html.ActionLink("Create New", "Create")
-</p>
+</p>*@
+<h3>Listes des Courriers</h3>
 
 
 <form asp-controller="Courrier" asp-action="Index" method="get">
@@ -16,33 +17,33 @@
 </form>
 
 <table class="table">
-  <tr>
-    <th>
-      @Html.DisplayNameFor(model => model.Réferences)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.Expediteur)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.Objet)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.Commentaire)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.CoursierId)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.ReceptionisteId)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.FlagId)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.StatusId)
-    </th>
-    <th></th>
-  </tr>
+    <tr>
+        <th>
+            Coursier
+        </th>
+        <th>
+            Receptioniste
+        </th>
+        <th>
+            Flag
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Réferences)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Expediteur)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Objet)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Commentaire)
+        </th>
+        <th></th>
+    </tr>
 
   @foreach (var item in Model)
   {
@@ -86,11 +87,11 @@
             @Html.DisplayFor(modelItem => item.StatusId)
         </td>*@
     <td>
-      @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+      @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
       @Html.ActionLink("Details", "Details", new { id = item.Id }) |
       @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
-      @Html.ActionLink("IndexCoursier", "IndexCoursier") |
-      @Html.ActionLink("IndexMouvementCourrier", "IndexMouvementCourrier",new { courrierId = item.Id}) |
+      @Html.ActionLink("IndexCoursier", "IndexCoursier") |*@
+      @Html.ActionLink("Details", "IndexMouvementCourrier",new { courrierId = item.Id})
       
     </td>
     </tr>
